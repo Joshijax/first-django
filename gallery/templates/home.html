@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+{% load static %}
+    <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+     <link rel="stylesheet" href="{% static 'lightbox.min.css' %}">
+    <script src="{% static 'lightbox-plus-jquery.min.js' %}"></script>
+
+   
+
+  
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+    #dropmenu{
+        left: -110px;
+    }
+</style>
+
+    <meta charset="UTF-8">
+
+    <title>GreenBox....</title>
+</head>
+
+
+<body style="height: auto; width: auto; background-color: #ECE5DD;  padding-top: 5px;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a style="color: forestgreen;" class="navbar-brand" href="/home"><img src="{% static 'gallery.jpg' %}" width="30">GreenBox</a>
+
+  <a class="nav-link btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">UPLOAD</a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav navbar-nav navbar-right mr-auto"></ul>
+
+    <ul class="navbar-nav navbar-right">
+
+
+
+         
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" style="color: forestgreen;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user" style="color: forestgreen;" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu" role="menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-user fa-fw"></i> User </a>
+          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-gear fa-fw"></i> Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/logout"><i style="color: forestgreen;" class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </div>
+      </li>
+    </ul>
+        <form action="/search" class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" required type="search" autocomplete="off"  name="q"  placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+     </div>
+
+
+</nav>
+
+
+
+
+
+
+<div id="myModal" class="modal fade" role="dialog">
+
+
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+
+
+          <div class="modal-header">
+
+
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+
+              <h4 class="modal-title">Please Insert Image</h4>
+          </div>
+
+
+              <div class="modal-body">
+                <form method='POST' enctype="multipart/form-data" action="/uploadss">
+
+                <input type="file" class="custom-file-input" name="photo" id="photo" oninput="input_filename();">
+                <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
+                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
+
+                <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Uploading...
+          </button>
+              </form>
+
+
+
+              </div>
+
+
+
+          <div class="modal-footer">
+
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+          </div>
+
+
+        </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+function input_filename() {
+
+  file_input_label.innerText = input.files[0].name;
+
+}
+
+</script>
+
+	<div class="container">
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="welcome">
+
+								<a class="" href="/picture">IMAGES</a>
+
+
+						<br><br>
+
+								<a class="" href="/doc">DOCUMENT/PDF</a>
+
+					<br><br>
+
+								<a class="" href="/vid">VIDEOS</a>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+<script>
+var progress = document.getElementById("progress");
+var progress_wrapper = document.getElementById("progress_wrapper");
+var progress_status = document.getElementById("progress_status");
+
+// Get a reference to the 3 buttons
+var upload_btn = document.getElementById("upload_btn");
+var loading_btn = document.getElementById("loading_btn");
+var cancel_btn = document.getElementById("cancel_btn");
+
+// Get a reference to the alert wrapper
+var alert_wrapper = document.getElementById("alert_wrapper");
+
+// Get a reference to the file input element & input label
+var input = document.getElementById("photo");
+var file_input_label = document.getElementById("file_input_label");
+
+// Function to show alerts
+function show_alert(message, alert) {
+
+  alert_wrapper.innerHTML = `
+    <div id="alert" class="alert alert-${alert} alert-dismissible fade show" role="alert">
+      <span>${message}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  `
+
+}
+
+// Function to upload file
+function upload() {
+
+
+  // Create a new FormData instance
+  var data = new FormData();
+
+
+
+  // Hide the upload button
+  upload_btn.classList.add("d-none");
+
+  // Show the loading button
+  loading_btn.classList.remove("d-none");
+
+  // Show the cancel button
+  cancel_btn.classList.remove("d-none");
+
+  // Show the progress bar
+  progress_wrapper.classList.remove("d-none");
+
+  // Get a reference to the file
+  var file = input.files[0];
+
+  // Get a reference to the filename
+  var filename = file.name;
+
+  // Get a reference to the filesize & set a cookie
+  var filesize = file.size;
+  document.cookie = `filesize=${filesize}`;
+
+  // Append the file to the FormData instance
+  data.append("file", file);
+
+  // request progress handler
+  request.upload.addEventListener("progress", function (e) {
+
+    // Get the loaded amount and total filesize (bytes)
+    var loaded = e.loaded;
+    var total = e.total
+
+    // Calculate percent uploaded
+    var percent_complete = (loaded / total) * 100;
+
+    // Update the progress text and progress bar
+    progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
+    progress_status.innerText = `${Math.floor(percent_complete)}% uploaded`;
+
+  })
+
+  // request load handler (transfer complete)
+  request.addEventListener("load", function (e) {
+
+    if (request.status == 200) {
+
+      show_alert(`${request.response.message}`, "success");
+
+    }
+    else {
+
+      show_alert(`Error uploading file`, "danger");
+
+    }
+
+    reset();
+
+  });
+
+  // request error handler
+  request.addEventListener("error", function (e) {
+
+    reset();
+
+    show_alert(`Error uploading file`, "warning");
+
+  });
+
+  // request abort handler
+  request.addEventListener("abort", function (e) {
+
+    reset();
+
+    show_alert(`Upload cancelled`, "primary");
+
+  });
+
+  // Open and send the request
+  request.open("post", url);
+  request.send(data);
+
+  cancel_btn.addEventListener("click", function () {
+
+    request.abort();
+
+  })
+
+}
+
+// Function to update the input placeholder
+function input_filename() {
+
+  file_input_label.innerText = input.files[0].name;
+
+}
+
+// Function to reset the page
+function reset() {
+
+  // Clear the input
+  input.value = null;
+
+  // Hide the cancel button
+  cancel_btn.classList.add("d-none");
+
+  // Reset the input element
+  input.disabled = false;
+
+  // Show the upload button
+  upload_btn.classList.remove("d-none");
+
+  // Hide the loading button
+  loading_btn.classList.add("d-none");
+
+  // Hide the progress bar
+  progress_wrapper.classList.add("d-none");
+
+  // Reset the progress bar state
+  progress.setAttribute("style", `width: 0%`);
+
+  // Reset the input placeholder
+  file_input_label.innerText = "Select file";
+
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>
