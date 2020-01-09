@@ -16,7 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.urls import include, path
+from django.conf.urls import url
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('gallery.urls')) 
+    path('', include('gallery.urls')),
+    url(r'^notifications/', include('notify.urls', 'notifications')),
+
+    url('^', include('django.contrib.auth.urls')),
+    path('api/', include('gallery.api.urls')),
 ]

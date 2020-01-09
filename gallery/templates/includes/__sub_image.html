@@ -1,0 +1,446 @@
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{% load static %}
+    <link rel="icon" href="{% static 'greenbox.jpg' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+     <link rel="stylesheet" href="{% static 'lightbox.min.css' %}">
+    <script src="{% static 'lightbox-plus-jquery.min.js' %}"></script>
+
+    
+
+    <script src="static/javascript.js" ></script>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title> Gallery</title>
+    <style>
+    #dropmenu{
+        left: -110px;
+    }
+    .pagination{
+      text-align:center;
+      
+    }
+
+</style>
+
+</head>
+
+<body  style="height: auto; width: auto; background-color: #ECE5DD;">
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a style="color: forestgreen;" class="navbar-brand" href="/home"><img src="static/greenbox.jpg" width="30">GreenBox</a>
+
+  <a class="nav-link btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">UPLOAD</a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav navbar-nav navbar-right mr-auto"></ul>
+
+    <ul class="navbar-nav navbar-right">
+
+
+
+    <form action="/search" class="nav-item form-inline my-2 my-lg-0">
+      <input class="form-control rounded-left form-control-sm mr-sm-2" required type="search" autocomplete="off"  name="q"  placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" style="color: forestgreen;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user" style="color: forestgreen;" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu" id="dropmenu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-user fa-fw"></i> User </a>
+          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-gear fa-fw"></i> Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'logout' %}"><i style="color: forestgreen;" class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </div>
+      </li>
+    </ul>
+     </div>
+
+
+</nav>
+
+<br>
+
+{% if messages %}
+
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}  alert-dismissible fade show"{% endif %} role="alert">
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+<style>
+#pagination{
+      text-align:center;
+      
+    }
+    #pagination-action{
+      margin: 0 0.1em;
+      display: inline-block;
+      padding: 0.5em;
+      font-size: 1.3em;
+      color:#B9B9B9;
+    }
+    #pagination-action:hover{
+      color: #0B6623;
+    }
+    .pagination-number{
+      background-color: #3F704D;
+      padding: 0.5em 0.8em;
+      color:#fff;
+      border-radius: 3px;
+    }
+    .pagination-number:hover{
+      background-color: #0B6623;
+      color:#fff;
+      text-decoration: none;
+    }
+    .pagination-current{
+      background-color: #0B6623;
+    }
+
+
+</style>
+
+<div id="myModal" class="modal fade" role="dialog">
+
+
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+
+
+          <div class="modal-header">
+
+
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+
+              <h4 class="modal-title">Please Insert Image</h4>
+          </div>
+
+
+              <div class="modal-body">
+                 <form method='POST' enctype="multipart/form-data" action="{% url 'upload_file' %}">
+                {% csrf_token %}
+                {{ form.file }}
+          
+                <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
+                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
+
+                <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Uploading...
+          </button>
+              </form>
+
+
+
+              </div>
+
+
+
+          <div class="modal-footer">
+
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+          </div>
+
+
+        </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+    <div id="pagination">
+        {% if tests.has_previous %} 
+          <a id="pagination-action" href="?page1"><i class="fa fa-angle-double-left " aria-hidden="true"></i></a>
+          <a  id="pagination-action" href="?page={{ tests.previous_page_number}}"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+        {% endif %}
+        
+        {% for num in tests.paginator.page_range%}
+        {% if tests.number == num %}
+          <span class="pagination-number pagination-current">{{ num }}</span>
+        {% elif num > tests.number|add:'-3' and num < tests.number|add:'3' %}
+        <a class="pagination-number" href="?page={{ num }}">{{num}}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if tests.has_next %}
+          <a  id="pagination-action" href="?page={{ tests.next_page_number }}"><i class="fa fa-angle-double-right " aria-hidden="true"></i></a>
+          <a  id="pagination-action" href="?page={{ tests.paginator.num_pages}}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        {% endif %}
+       </div> 
+    
+    </hr>
+
+    <div class="container">
+
+            <div class="row">
+                
+                
+                {% for product in tests %}
+                
+                <div class="col-sm-3 col-6" style="padding-bottom: 20px; padding-right:5px;">
+                  <div class="card h-100" style="background: forestgreen; height: 30%;" >
+
+                      <div class="gallery" >
+                        <a href="{{ product.file.url }}" data-lightbox="mygallery"><img src="{{ product.file.url }}" style="width:100%; height: 80%;"></a>
+                        <br>
+
+                      </div>
+
+
+                        <a style="color: #000; background: #ECE5DD; text-align:center; text-decoration: none; border: 1px solid #fff; border-radius: 20px; margin-bottom: 10px; width: auto;" class="" id="my-button" href="show_image/{{product.id}}/{{product.slug}}">
+                            details
+                        </a>
+
+                  </div>
+
+                </div>
+
+
+                {% endfor %}
+                
+            </div>
+            <!-- /.row -->
+
+    </div>
+
+
+<script>
+var progress = document.getElementById("progress");
+var progress_wrapper = document.getElementById("progress_wrapper");
+var progress_status = document.getElementById("progress_status");
+
+// Get a reference to the 3 buttons
+var upload_btn = document.getElementById("upload_btn");
+var loading_btn = document.getElementById("loading_btn");
+var cancel_btn = document.getElementById("cancel_btn");
+
+// Get a reference to the alert wrapper
+var alert_wrapper = document.getElementById("alert_wrapper");
+
+// Get a reference to the file input element & input label
+var input = document.getElementById("id_file");
+var file_input_label = document.getElementById("file_input_label");
+
+// Function to show alerts
+function show_alert(message, alert) {
+
+  alert_wrapper.innerHTML = `
+    <div id="alert" class="alert alert-${alert} alert-dismissible fade show" role="alert">
+      <span>${message}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  `
+
+}
+
+// Function to upload file
+function upload() {
+
+
+  // Create a new FormData instance
+  var data = new FormData();
+
+
+
+  // Hide the upload button
+  upload_btn.classList.add("d-none");
+
+  // Show the loading button
+  loading_btn.classList.remove("d-none");
+
+  // Show the cancel button
+  cancel_btn.classList.remove("d-none");
+
+  // Show the progress bar
+  progress_wrapper.classList.remove("d-none");
+
+  // Get a reference to the file
+  var file = input.files[0];
+
+  // Get a reference to the filename
+  var filename = file.name;
+
+  // Get a reference to the filesize & set a cookie
+  var filesize = file.size;
+  document.cookie = `filesize=${filesize}`;
+
+  // Append the file to the FormData instance
+  data.append("file", file);
+
+  // request progress handler
+  request.upload.addEventListener("progress", function (e) {
+
+    // Get the loaded amount and total filesize (bytes)
+    var loaded = e.loaded;
+    var total = e.total
+
+    // Calculate percent uploaded
+    var percent_complete = (loaded / total) * 100;
+
+    // Update the progress text and progress bar
+    progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
+    progress_status.innerText = `${Math.floor(percent_complete)}% uploaded`;
+
+  })
+
+  // request load handler (transfer complete)
+  request.addEventListener("load", function (e) {
+
+    if (request.status == 200) {
+
+      show_alert(`${request.response.message}`, "success");
+
+    }
+    else {
+
+      show_alert(`Error uploading file`, "danger");
+
+    }
+
+    reset();
+
+  });
+
+  // request error handler
+  request.addEventListener("error", function (e) {
+
+    reset();
+
+    show_alert(`Error uploading file`, "warning");
+
+  });
+
+  // request abort handler
+  request.addEventListener("abort", function (e) {
+
+    reset();
+
+    show_alert(`Upload cancelled`, "primary");
+
+  });
+
+  // Open and send the request
+  request.open("post", url);
+  request.send(data);
+
+  cancel_btn.addEventListener("click", function () {
+
+    request.abort();
+
+  })
+
+}
+
+// Function to update the input placeholder
+function input_filename() {
+
+  file_input_label.innerText = input.files[0].name;
+
+
+}
+$(document).ready(
+    function(){
+        $('input:submit').attr('disabled',true);
+        $('input:file').change(
+            function(){
+                if ($(this).val()){
+                    $('input:submit').removeAttr('disabled'); 
+                }
+                else {
+                    $('input:submit').attr('disabled',true);
+                }
+            });
+    });
+
+// Function to reset the page
+function reset() {
+
+  // Clear the input
+  input.value = null;
+
+  // Hide the cancel button
+  cancel_btn.classList.add("d-none");
+
+  // Reset the input element
+  input.disabled = false;
+
+  // Show the upload button
+  upload_btn.classList.remove("d-none");
+
+  // Hide the loading button
+  loading_btn.classList.add("d-none");
+
+  // Hide the progress bar
+  progress_wrapper.classList.add("d-none");
+
+  // Reset the progress bar state
+  progress.setAttribute("style", `width: 0%`);
+
+  // Reset the input placeholder
+  file_input_label.innerText = "Select file";
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+
+
+
+
+</html>

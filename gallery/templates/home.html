@@ -10,12 +10,14 @@
 
 
 {% load static %}
+{% load notification_tags %}
+{% render_notifications using request.user.notifications.active for box %}
     <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="{% static 'style1.css' %}">
-
+    <link rel="stylesheet" href="{% static 'style2.css' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">
      <link rel="stylesheet" href="{% static 'lightbox.min.css' %}">
     <script src="{% static 'lightbox-plus-jquery.min.js' %}"></script>
@@ -88,7 +90,19 @@
 </nav>
 
 
+{% if messages %}
 
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}  alert-dismissible fade show"{% endif %} role="alert">
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+{% endif %}
 
 
 
@@ -112,9 +126,10 @@
 
 
               <div class="modal-body">
-                <form method='POST' enctype="multipart/form-data" action="/uploadss">
-
-                <input type="file" class="custom-file-input" name="photo" id="photo" oninput="input_filename();">
+                <form method='POST' enctype="multipart/form-data" action="{% url 'upload_file' %}">
+                {% csrf_token %}
+                {{ form.file }}
+                
                 <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
                 <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
 
@@ -160,11 +175,11 @@ function input_filename() {
 	<div class="container">
 
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-sm-12">
 
 					<div class="welcome">
 
-								<a class="" href="/picture">IMAGES</a>
+								<a class="" href="{% url 'image' %}">IMAGES</a>
 
 
 						<br><br>
@@ -196,7 +211,7 @@ var cancel_btn = document.getElementById("cancel_btn");
 var alert_wrapper = document.getElementById("alert_wrapper");
 
 // Get a reference to the file input element & input label
-var input = document.getElementById("photo");
+var input = document.getElementById("id_file");
 var file_input_label = document.getElementById("file_input_label");
 
 // Function to show alerts
@@ -316,7 +331,21 @@ function input_filename() {
 
   file_input_label.innerText = input.files[0].name;
 
+
 }
+$(document).ready(
+    function(){
+        $('input:submit').attr('disabled',true);
+        $('input:file').change(
+            function(){
+                if ($(this).val()){
+                    $('input:submit').removeAttr('disabled'); 
+                }
+                else {
+                    $('input:submit').attr('disabled',true);
+                }
+            });
+    });
 
 // Function to reset the page
 function reset() {
@@ -354,4 +383,5 @@ function reset() {
 
 
 </body>
+
 </html>
