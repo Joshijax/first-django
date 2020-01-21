@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser, User
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, post_init
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token 
 import os
@@ -10,6 +10,7 @@ import os
 
 
 
+ 
 
 # Create your models here.
 class Student(models.Model):
@@ -31,11 +32,13 @@ class uploads(models.Model):
     file = models.FileField(upload_to=user_directory_path, null=False, blank=False)
     filename = models.CharField(max_length = 100, blank=True)
     username = models.CharField(max_length = 100)
-    file_name = models.CharField(max_length = 100)
+    file_name = models.CharField(max_length = 200)
+    file_name1 = models.CharField(max_length = 200)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=False, blank=False)
     filetype = models.CharField(max_length = 10)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length = 150, unique=False)
+  
 
     def __unicode__(self):
         return '%s' % (self.file.name)
@@ -48,9 +51,10 @@ class uploads(models.Model):
         self.slug = slugify(self.file_name, allow_unicode=True)
         super(uploads, self).save(*args, **kwargs)
 
-@receiver(post_delete, sender=uploads)
-def submission_delete(sender, instance, **kwargs):
-    instance.file.delete(False)
+  
+
+
+
 
 class uploadss(models.Model):
     
@@ -73,3 +77,5 @@ class uploadss(models.Model):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+

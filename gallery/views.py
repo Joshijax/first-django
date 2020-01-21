@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.contrib.auth import login, authenticate, logout
 from django import forms
 from django.shortcuts import get_object_or_404, render
@@ -15,6 +15,7 @@ import pathlib
 from django.utils.text import slugify
 from django.core.files import File
 from .forms import UploadFileForm, SignUpForm, ContactForm,LoginUpForm, renamee
+from django.template import loader, Context
 import functools
 import urllib, mimetypes
 from django.http import HttpResponse, Http404
@@ -28,6 +29,7 @@ from django.core.files.storage import FileSystemStorage
 from .models import uploads, uploadss
 from django.template.loader import render_to_string
 from .token_generator import account_activation_token
+from .converterGif import convertToGif
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -36,8 +38,8 @@ from django.core.mail import EmailMessage
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.utils.encoding import smart_str
-from notify.signals import notify
-# Create your views here.
+
+
 
 
 
@@ -56,6 +58,7 @@ def is_logged_in(f):
         if request.user.is_authenticated == True:
             return redirect('home')
         else:
+           
             return f(request, *args, *kwargs)
 
     return wrap
@@ -74,7 +77,7 @@ def index(request):
                login(request, user)
                request.session['username'] = username
                messages.info(request, f"you are logged in as {username} ")
-               return redirect('home')
+               return redirect('home2')
                # assert False
               
     else:
@@ -146,19 +149,29 @@ def upload_file(request):
             config2 = [ '.MP4', '.3GP']   
             file_name=request.FILES['file']
             extension = os.path.splitext(str(request.FILES['file']))[1]
+            extension2 = os.path.splitext(str(request.FILES['file']))[0]
             extension = extension.upper()
-            print(extension)
+            newname= str(extension2+'.gif')
+            
             if extension in config and form.is_valid():
                 new_obj = uploads(file_name=request.FILES['file'],filetype='image',file=form.cleaned_data['file'], username=user, author=request.user)
                 new_obj.save()
+               
+               
                 
-                notify.send(request.user, recipient=user, actor=request.user , verb='followed you.', nf_type='followed_by_one_user')
+               
 
                 messages.add_message(request, messages.SUCCESS, 'image succesfully uploaded')
                 return redirect('image')
             if extension in config2 and form.is_valid():
-                new_obj = uploads(file_name=request.FILES['file'],filetype='video',file=form.cleaned_data['file'], username=user, author=request.user)
+                new_obj = uploads(file_name=request.FILES['file'],filetype='video',file=form.cleaned_data['file'], username=user, author=request.user, file_name1=newname)
+                file=form.cleaned_data['file']
                 new_obj.save()
+                objj= uploads.objects.filter(file_name=request.FILES['file']).first()
+                newnameDir = settings.MEDIA_ROOT+"\\gallery\\{}\\".format(request.user)+'{}'.format(extension2)+'.gif'
+                filenamex= settings.MEDIA_ROOT+"\\"+str(objj.file)
+               
+                convertToGif(filenamex, newnameDir)
                 messages.add_message(request, messages.SUCCESS, 'video succesfully uploaded')
                 return redirect('video')
             messages.add_message(request, messages.SUCCESS, 'file not allowed')
@@ -172,6 +185,29 @@ def upload_file(request):
 @login_required(login_url='/')    
 def image(request):
     form = UploadFileForm(request.POST, request.FILES)
+    
+    
+        # create a form instance and populate it with data from the request:
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form1 = renamee(request.POST)
+        # check whether it's valid:
+        
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form1 = renamee()
+
+   
+        # check whether it's valid:
+        
+
+    # if a GET (or any other method) we'll create a blank form
+    
+    
+
+    
+
     if request.user.is_authenticated == True:
         
         user = request.user
@@ -184,9 +220,9 @@ def image(request):
 
         
     if page:
-        return render(request, '__sub_image.html', {'tests': tests, 'form': form, 'media_url': settings.MEDIA_URL,})
+        return render(request, '__sub_image.html', {'tests': tests, 'form': form,'form1': form1, 'media_url': settings.MEDIA_URL,})
     else:
-        return render(request, 'image.html', {'tests': tests, 'form': form, 'media_url': settings.MEDIA_URL,})
+        return render(request, 'image.html', {'tests': tests,'form1': form1, 'form': form, 'media_url': settings.MEDIA_URL,})
 
 @login_required(login_url='/')    
 def video(request):
@@ -196,6 +232,7 @@ def video(request):
         user = request.user
         file_type = 'video'
         tests = uploads.objects.all().filter(filetype= file_type,username=user).order_by('uploaded_at').reverse()
+        
         test = uploads.objects.all().filter(filetype= file_type,username=user).order_by('uploaded_at').count()
         paginator = Paginator(tests, 8)
         page = request.GET.get('page')
@@ -206,7 +243,7 @@ def video(request):
     if page:
         return render(request, '__sub_vid.html', {'tests': tests, 'test': test, 'form': form, 'media_url': settings.MEDIA_URL,})
     else:
-        return render(request, 'vid.html', {'tests': tests, 'form': form, 'media_url': settings.MEDIA_URL,})
+        return render(request, 'vid.html', {'tests': tests, 'form': form, 'media_url': settings.MEDIA_URL, 'media_root': settings.MEDIA_ROOT,})
 
 @login_required(login_url='/')
 def search(request):
@@ -225,11 +262,11 @@ def search(request):
         
     return render(request, 'search.html',  {'search': search, 'media_url': settings.MEDIA_URL,})
 @login_required(login_url='/')
-def rename(request, file_name):
+def rename(request, file_name, id_image):
     
     if request.method == 'POST':
-        form = renamee(request.POST)
-        file=form.data['rename']
+        
+        file= request.POST['name']
         ext = file_name.rsplit(".", 1)[1]
         newname = file+'.'+ext
         file_field = 'gallery/{}/{}'.format(request.user, newname)
@@ -238,16 +275,18 @@ def rename(request, file_name):
         update.file = file_field
         update.save()
         slug = slugify(newname, allow_unicode=True)
+       
         print(slug)
         os.rename(settings.MEDIA_ROOT +'/gallery/{}/{}'.format(request.user, file_name), settings.MEDIA_ROOT +'/gallery/{}/{}'.format(request.user, newname))
-        print(newname)
-    else:
-        form = rename()
-    return HttpResponseRedirect("/image/show_image/44/{}".format(slug))
+        tests = uploads.objects.all().filter(id=id_image,username=request.user)
+        
+        
+        return render_to_response("image.html", {'tests': tests,})
+    
 
 
 @login_required(login_url='/')
-def show_image(request, id_image, slug):
+def show_video(request, id_video):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = renamee(request.POST)
@@ -258,19 +297,19 @@ def show_image(request, id_image, slug):
     else:
         form = renamee()
 
-    tests = uploads.objects.all().filter(slug= slug, id=id_image)
+    tests = uploads.objects.all().filter(id=id_video, username=request.user)
     
     
     
-    return render(request, 'view_image.html', {'tests': tests,'form':form, 'media_url': settings.MEDIA_URL,})
+    return render(request, 'video_file.html', {'tests': tests,'form':form, 'media_url': settings.MEDIA_URL,})
 @login_required(login_url='/')
 def delete(request, id_image, file_name):
     user = request.user
     
     tests = uploads.objects.get(id = id_image,)
     tests.delete()
-    messages.add_message(request, messages.SUCCESS, f'image {file_name} successfully deleted')
-    return redirect('image')
+    # messages.add_message(request, messages.SUCCESS, f'image {file_name} successfully deleted')
+    return render_to_response("image.html",)
 
 
 def download(request,file_name):
@@ -281,17 +320,43 @@ def download(request,file_name):
     response = HttpResponse(file_wrapper, content_type=file_mimetype )
     response['X-Sendfile'] = file_path
     response['Content-Length'] = os.stat(file_path).st_size
-    response['Content-Disposition'] = 'attachment; filename=%s/' % str(file_name) 
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file_name)  
     return response
 
 
 
 @login_required(login_url='/')
-def home(request):
+def home2(request):
     form = UploadFileForm(request.POST, request.FILES)
     
     
     return render(request, 'home.html', { 'form': form})
+
+@login_required(login_url='/')
+def home(request):
+
+    form = UploadFileForm(request.POST, request.FILES)
+
+    user = request.user
+    file_type = 'image'
+    file_type2 = 'video'
+    tests = uploads.objects.all().filter(filetype= file_type,username=user).order_by('uploaded_at').reverse()
+    file_type = 'image'
+    testss = uploads.objects.all().filter(filetype= file_type2,username=user).order_by('uploaded_at').reverse()
+    test1 = uploads.objects.all().filter(filetype= file_type,username=user).order_by('uploaded_at')
+    test2 = uploads.objects.all().filter(filetype= file_type2,username=user).order_by('uploaded_at')
+    paginator = Paginator(tests, 8)
+    paginatorr = Paginator(testss, 8)
+    page = request.GET.get('page')
+
+    tests = paginator.get_page(page)
+    testss = paginatorr.get_page(page)
+    
+    
+    return render(request, 'home2.html', {'tests': tests, 'test1': test1, 'test2': test2,'testss': testss, 'form': form, 'media_url': settings.MEDIA_URL,})
+
+
+
 
 def logout_request(request):
     
@@ -300,3 +365,5 @@ def logout_request(request):
     logout(request)
     
     return redirect('/')
+
+

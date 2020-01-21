@@ -10,8 +10,7 @@
 
 
 {% load static %}
-{% load notification_tags %}
-{% render_notifications using request.user.notifications.active for box %}
+
     <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -131,7 +130,8 @@
                 {{ form.file }}
                 
                 <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
-                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
+                <div id="alert_wrapper"></div>
+                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()" >UPLOAD</button>
 
                 <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -231,7 +231,10 @@ function show_alert(message, alert) {
 // Function to upload file
 function upload() {
 
-
+  if(!input.value){
+    show_alert("No file selected", "warning")
+    return;
+  }
   // Create a new FormData instance
   var data = new FormData();
 
@@ -333,19 +336,7 @@ function input_filename() {
 
 
 }
-$(document).ready(
-    function(){
-        $('input:submit').attr('disabled',true);
-        $('input:file').change(
-            function(){
-                if ($(this).val()){
-                    $('input:submit').removeAttr('disabled'); 
-                }
-                else {
-                    $('input:submit').attr('disabled',true);
-                }
-            });
-    });
+
 
 // Function to reset the page
 function reset() {

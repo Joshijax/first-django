@@ -194,7 +194,7 @@
               <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
       <div class="modal-body">
-        <form action="{% url 'rename' product.file_name  %}" method="POST">
+        <form action="{% url 'rename' product.file_name product.id  %}" method="POST" onsubmit="myFunction()">
             {% csrf_token %}
             <div class="form-group">
             {{ form }}

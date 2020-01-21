@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Side bar</title>
+{% load static %}
+
+    <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    <link rel="stylesheet" href="{% static 'style2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+    
+    <script src="{% static 'scripts.js' %}"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+
+  <link rel="stylesheet" href="{% static 'lightbox.min.css' %}">
+    <script src="{% static 'lightbox-plus-jquery.min.js' %}"></script>
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.12/video.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- Latest compiled JavaScript -->
+
+<style>
+
+ html, body {
+
+    }
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color:#000;
+      height: 100vh;
+      padding: 0;
+      
+    }
+.swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+	  margin-right: 15px;
+	width:100%;
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+  </style>
+
+
+
+</head>
+<body>
+
+
+
+<div id="myModal" class="modal fade" role="dialog">
+
+
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+
+
+          <div class="modal-header">
+              <h4 class="modal-title">Please Insert Image</h4>
+
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+          </div>
+
+
+              <div class="modal-body">
+                 <form method='POST' enctype="multipart/form-data" action="{% url 'upload_file' %}">
+                {% csrf_token %}
+                {{ form.file }}
+          
+                <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
+                <div id="alert_wrapper"></div>
+                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
+
+                <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Uploading...
+          </button>
+              </form>
+
+
+
+              </div>
+
+
+
+          <div class="modal-footer">
+
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+          </div>
+
+
+        </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+
+
+	<nav class="home">
+    
+		<div class="sidebar-content" id="sidebar">
+		<div class="sidebar">
+			<ul>
+				<a href="javascript:void(0)" class="closebtn" onclick="closesidebar()">&times;</a>
+				<li class="search">
+        <form action="/search" class="nav-item form-inline my-2 my-lg-0">
+					<div class="search-wrapper">
+						<input type="search" id="search" name="q"  placeholder="Search" aria-label="Search" placeholder="Search">
+						<div class="search-icon"><button class="btn " type="submit"> <i class="fa fa-search"></i> </button></div>
+					</div>
+          </form>
+				</li>
+				<a class="links" href="#"> Home</a>
+				<a class="links" href="#"> Settings</a>
+				<a class="links" href="#"> Contact<i style="color: forestgreen;"  class="far fa-id-badge"></i></a>
+				<a class="links" href="#"> About</a>
+				<a class="links" href="{% url 'logout' %}"> Logout<i style="color: forestgreen;" class="fa fa-sign-out fa-fw"></i></a>
+				
+			</ul>
+		</div>
+    </div>
+  
+
+		
+	<div class="navigation" id="navigation">
+		<div class="navigation__menu">
+			<div class="toggle-btn" id="toggle-btn" onclick="opensidebar()">
+				<span class="span1"></span>
+				<span class="span2"></span>
+				<span class="span3"></span>
+			</div>
+			
+		</div>
+		<div class="navigation__logo">Greenbox<img height="30" width="30" src="{% static 'gallery.jpg' %}"></div>
+		
+	
+		
+	</div>
+
+
+
+		
+	
+	</nav>
+
+	<br>
+			
+{% if messages %}
+
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}  alert-dismissible fade show"{% endif %} role="alert">
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+<div class="row">
+        {% for vid in tests  %}
+        <div class="col-sm-12 video_view">
+		<video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
+ preload
+ data-setup="{}" type="video/mp4">
+                          <source src="{{ vid.file.url }}">
+                           <source src="{{ vid.file.url }}#t=3" >
+
+                      </video>
+
+		</div>
+        {% endfor %}
+		
+		
+	</div>
+
+	<div class="video_details_container">
+	<div class="video-container1">abcd</div>
+	<div class="video-container2">1234</div>
+	<div class="video-container3">$%^&*()</div>
+	</div>
+
+	<hr>
+<div class="parent">
+	<div class="child1">
+		<a href=""><img  src="image/nature-1.jpg"></a>
+	</div>
+	<div class="child2" onclick="options()">
+		<div class="dropup">
+  			<i class="fa fa-ellipsis-v"></i>
+  			<div class="dropup-content" id="dropup-content">
+				<a href="#">Link 1</a>
+				<a href="#">Link 2</a>
+				<a href="#">Link 3</a>
+				<a href="#">Link 3</a>
+				
+  			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+
+
+ <script src="{% static 'js/swiper.min.js' %}"></script>
+
+<script>
+var progress = document.getElementById("progress");
+var progress_wrapper = document.getElementById("progress_wrapper");
+var progress_status = document.getElementById("progress_status");
+
+// Get a reference to the 3 buttons
+var upload_btn = document.getElementById("upload_btn");
+var loading_btn = document.getElementById("loading_btn");
+var cancel_btn = document.getElementById("cancel_btn");
+
+// Get a reference to the alert wrapper
+var alert_wrapper = document.getElementById("alert_wrapper");
+
+// Get a reference to the file input element & input label
+var input = document.getElementById("id_file");
+var file_input_label = document.getElementById("file_input_label");
+
+// Function to show alerts
+function show_alert(message, alert) {
+
+  alert_wrapper.innerHTML = `
+    <div id="alert" class="alert alert-${alert} alert-dismissible fade show" role="alert">
+      <span>${message}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  `
+
+}
+
+// Function to upload file
+function upload() {
+
+  if(!input.value){
+    show_alert("No file selected", "warning")
+    return;
+  }
+  // Create a new FormData instance
+  var data = new FormData();
+
+
+
+  // Hide the upload button
+  upload_btn.classList.add("d-none");
+
+  // Show the loading button
+  loading_btn.classList.remove("d-none");
+
+  // Show the cancel button
+  cancel_btn.classList.remove("d-none");
+
+  // Show the progress bar
+  progress_wrapper.classList.remove("d-none");
+
+  // Get a reference to the file
+  var file = input.files[0];
+
+  // Get a reference to the filename
+  var filename = file.name;
+
+  // Get a reference to the filesize & set a cookie
+  var filesize = file.size;
+  document.cookie = `filesize=${filesize}`;
+
+  // Append the file to the FormData instance
+  data.append("file", file);
+
+  // request progress handler
+  request.upload.addEventListener("progress", function (e) {
+
+    // Get the loaded amount and total filesize (bytes)
+    var loaded = e.loaded;
+    var total = e.total
+
+    // Calculate percent uploaded
+    var percent_complete = (loaded / total) * 100;
+
+    // Update the progress text and progress bar
+    progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
+    progress_status.innerText = `${Math.floor(percent_complete)}% uploaded`;
+
+  })
+
+  // request load handler (transfer complete)
+  request.addEventListener("load", function (e) {
+
+    if (request.status == 200) {
+
+      show_alert(`${request.response.message}`, "success");
+
+    }
+    else {
+
+      show_alert(`Error uploading file`, "danger");
+
+    }
+
+    reset();
+
+  });
+
+  // request error handler
+  request.addEventListener("error", function (e) {
+
+    reset();
+
+    show_alert(`Error uploading file`, "warning");
+
+  });
+
+  // request abort handler
+  request.addEventListener("abort", function (e) {
+
+    reset();
+
+    show_alert(`Upload cancelled`, "primary");
+
+  });
+
+  // Open and send the request
+  request.open("post", url);
+  request.send(data);
+
+  cancel_btn.addEventListener("click", function () {
+
+    request.abort();
+
+  })
+
+}
+
+// Function to update the input placeholder
+function input_filename() {
+
+  file_input_label.innerText = input.files[0].name;
+
+
+}
+
+
+// Function to reset the page
+function reset() {
+
+  // Clear the input
+  input.value = null;
+
+  // Hide the cancel button
+  cancel_btn.classList.add("d-none");
+
+  // Reset the input element
+  input.disabled = false;
+
+  // Show the upload button
+  upload_btn.classList.remove("d-none");
+
+  // Hide the loading button
+  loading_btn.classList.add("d-none");
+
+  // Hide the progress bar
+  progress_wrapper.classList.add("d-none");
+
+  // Reset the progress bar state
+  progress.setAttribute("style", `width: 0%`);
+
+  // Reset the input placeholder
+  file_input_label.innerText = "Select file";
+
+}
+
+
+
+</script>
+
+
+
+<script>
+    var swiper = new Swiper('.swiper-container', {
+      slidesPerView: 3,
+      spaceBetween: 30,
+      freeMode: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+
+
+  </script>
+<script src="{% static 'scripts.js' %}"></script>
+
+
+
+</body>
+{% include 'includes/_footer.html' %}
+</html>

@@ -40,14 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gallery',
-    'notify',
+    
     'rest_framework',
     'rest_framework.authtoken',
-    
+   
  
 ]
-
-
+ 
+ 
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -156,7 +156,7 @@ MEDIA_URL = '/media/'
 
 NOTIFICATIONS_SOFT_DELETE=True
 
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 EMAIL_HOST = 'smtp.gmail.com'
 
 EMAIL_USE_SSL = True

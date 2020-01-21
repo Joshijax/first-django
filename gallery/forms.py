@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class UploadFileForm(forms.ModelForm):
     
     file = forms.FileField(widget=forms.ClearableFileInput(attrs={'placeholder':'input your password', 'class': 'custom-file-input',  'oninput' : 'input_filename();',  }))
+    
     class Meta:
         model = uploads
         fields = ('file' ,)
@@ -41,4 +42,4 @@ class LoginUpForm(AuthenticationForm):
         fields = ('username' , 'password', )
 
 class renamee(forms.Form):
-    rename = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'rename','class' :'form-control', 'required': 'required' }))
+    rename = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'rename','class' :'form-control', 'required': 'required',  }))

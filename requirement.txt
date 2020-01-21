@@ -6,3 +6,9 @@ mysqlclient==1.4.5
 PyMySQL==0.9.3
 pytz==2019.3
 sqlparse==0.3.0
+enum-compat==0.0.2
+eventlet==0.21.0
+python-engineio
+python-socketio
+
+six==1.10.0

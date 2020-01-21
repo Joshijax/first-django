@@ -1,105 +1,199 @@
-    
-    
-    <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
-
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Side bar</title>
 {% load static %}
-{% load staticfiles %}
-{% load notification_tags %}
-{% user_notifications %}
-{% include_notify_js_variables %}
-<script src="{% static 'notify/notifyX.js' %}"></script>
-<script src="{% static 'notify/notifyX.min.js' %}"></script>
-    <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'style1.css' %}">
 
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="{% static 'style2.css' %}">
-     <link rel="stylesheet" href="{% static 'lightbox.min.css' %}">
-    <script src="{% static 'lightbox-plus-jquery.min.js' %}"></script>
+    <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
+    <link rel="stylesheet" href="{% static 'style2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+    
+    <script src="{% static 'scripts.js' %}"></script>
+  
 
-    <script src="static/javascript.js" ></script>
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<!-- Popper JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="{% static 'lightbox.min.css' %}">
+    <script src="{% static 'lightbox-plus-jquery.min.js' %}"></script>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.12/video.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <meta charset="UTF-8">
-    <title> Gallery</title>
-    <style>
-    #dropmenu{
-        left: -110px;
+
+<style>
+
+ html, body {
+
     }
-    .pagination{
-      text-align:center;
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color:#000;
+      height: 100vh;
+      padding: 0;
       
     }
+.swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+    margin-right: 15px;
+  width:100%;
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+  </style>
 
-</style>
+
 
 </head>
-
-<body  style="height: auto; width: auto; background-color: #ECE5DD;">
-
-
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a style="color: forestgreen;" class="navbar-brand" href="/home"><img src="{% static 'gallery.jpg' %}" width="30">GreenBox</a>
-
-  <a class="nav-link btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">UPLOAD</a>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<body  id='body'>
 
 
 
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="nav navbar-nav navbar-right mr-auto"></ul>
-
-    <ul class="navbar-nav navbar-right">
+<div id="myModal" class="modal fade" role="dialog">
 
 
+    <div class="modal-dialog">
 
-    <form action="/search" class="nav-item form-inline my-2 my-lg-0">
-      <input class="form-control rounded-left form-control-sm mr-sm-2" required type="search" autocomplete="off"  name="q"  placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-    </form>
 
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" style="color: forestgreen;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-user" style="color: forestgreen;" aria-hidden="true"></i>
-        </a>
-        <div class="dropdown-menu" id="dropmenu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-user fa-fw"></i> User </a>
-          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-gear fa-fw"></i> Settings</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'logout' %}"><i style="color: forestgreen;" class="fa fa-sign-out fa-fw"></i> Logout</a>
+        <div class="modal-content">
+
+
+          <div class="modal-header">
+              <h4 class="modal-title">Please Insert Image</h4>
+
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+          </div>
+
+
+              <div class="modal-body">
+                 <form id="upload_Form" method='POST' enctype="multipart/form-data" action="{% url 'upload_file' %}">
+                {% csrf_token %}
+                {{ form.file }}
+          
+                <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
+                <div id="alert_wrapper"></div>
+                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
+                <br>
+               
+
+                <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Uploading...
+          </button>
+
+           <div style="margin-top: 20px;" id="progress" class="progress d-none">
+                  <div id="progressBar" class="progress-bar " role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+              </form>
+              
+
+
+
+              </div>
+
+
+
+          <div class="modal-footer">
+
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+          </div>
+
+
         </div>
-      </li>
-    </ul>
-     </div>
 
 
-</nav>
+    </div>
 
-<br>
+  </div>
+</div>
 
+
+
+  <nav class="home">
+    
+    <div class="sidebar-content" id="sidebar">
+    <div class="sidebar">
+      <ul>
+        <a href="javascript:void(0)" class="closebtn" onclick="closesidebar()">&times;</a>
+        <li class="search">
+        <form action="/search" class="nav-item form-inline my-2 my-lg-0">
+          <div class="search-wrapper">
+            <input type="search" id="search" name="q"  placeholder="Search" aria-label="Search" placeholder="Search">
+            <div class="search-icon"><button class="btn " type="submit"> <i class="fa fa-search"></i> </button></div>
+          </div>
+          </form>
+        </li>
+        <a class="links" href="#"> Home</a>
+        <a class="links" href="#"> Settings</a>
+        <a class="links" href="#"> Contact<i style="color: forestgreen;"  class="far fa-id-badge"></i></a>
+        <a class="links" href="#"> About</a>
+        <a class="links" href="{% url 'logout' %}"> Logout<i style="color: forestgreen;" class="fa fa-sign-out fa-fw"></i></a>
+        
+      </ul>
+    </div>
+    </div>
+  
+
+    
+  <div class="navigation" id="navigation">
+    <div class="navigation__menu">
+      <div class="toggle-btn" id="toggle-btn" onclick="opensidebar()">
+        <span class="span1"></span>
+        <span class="span2"></span>
+        <span class="span3"></span>
+      </div>
+      
+    </div>
+    <div class="navigation__logo">Greenbox<img height="30" width="30" src="{% static 'gallery.jpg' %}"></div>
+    
+  <a class="nav-link btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">UPLOAD</a>
+    
+  </div>
+
+
+
+    
+  
+  </nav>
+
+  <br>
+      
 {% if messages %}
 
     {% for message in messages %}
@@ -114,7 +208,78 @@
 
 {% endif %}
 
-<style>
+
+
+
+{% for product in tests %}
+
+
+{% endfor %}
+
+
+<div id="myModal" class="modal fade" role="dialog">
+
+
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+
+
+          <div class="modal-header">
+              <h4 class="modal-title">Please Insert Image</h4>
+
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+          </div>
+
+
+              <div class="modal-body">
+                 <form id="upload_Form" method='POST' enctype="multipart/form-data" action="{% url 'upload_file' %}">
+                {% csrf_token %}
+                {{ form.file }}
+          
+                <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
+                <div id="alert_wrapper"></div>
+                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
+                <br>
+               
+
+                <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Uploading...
+          </button>
+
+           <div style="margin-top: 20px;" id="progress" class="progress d-none">
+                  <div id="progressBar" class="progress-bar " role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+              </form>
+              
+
+
+
+              </div>
+
+
+
+          <div class="modal-footer">
+
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+          </div>
+
+
+        </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+  <style>
 #pagination{
       text-align:center;
       
@@ -143,67 +308,16 @@
     .pagination-current{
       background-color: #0B6623;
     }
+    .ajaxProgress{
+      display: none;
+      
+      align-items: center;
+      justify-content: center; 
+    }
 
 
 </style>
-
-<div id="myModal" class="modal fade" role="dialog">
-
-
-    <div class="modal-dialog">
-
-
-        <div class="modal-content">
-
-
-          <div class="modal-header">
-
-
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-
-              <h4 class="modal-title">Please Insert Image</h4>
-          </div>
-
-
-              <div class="modal-body">
-                 <form method='POST' enctype="multipart/form-data" action="{% url 'upload_file' %}">
-                {% csrf_token %}
-                {{ form.file }}
-          
-                <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
-                <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
-
-                <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Uploading...
-          </button>
-              </form>
-
-
-
-              </div>
-
-
-
-          <div class="modal-footer">
-
-
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-
-          </div>
-
-
-        </div>
-
-
-    </div>
-
-  </div>
-</div>
-
-    
+  
     
     </hr>
 
@@ -212,26 +326,172 @@
             <div class="row">
                 
                 
-                {% for product in tests %}
+               {% for product in tests %}
                 
-                <div class="col-sm-3 col-6" style="padding-bottom: 20px; padding-right:5px;">
-                  <div class="card h-100" style="background: forestgreen; height: 30%;" >
-
-                      <div class="gallery" >
-                        <a href="{{ product.file.url }}" data-lightbox="mygallery"><img src="{{ product.file.url }}" style="width:100%; height: 80%;"></a>
-                        <br>
-
+                  <div   class="col-sm-3 col-6" style="padding-bottom: 20px; padding-right:5px;">
+                    <div  id="id-{{product.id}}" class="parent" >
+                      <div class="child1" >
+                        <a href="{{ product.file.url }}" data-lightbox="mygallery"><img src="{{ product.file.url }}"></a>
                       </div>
-
-
-                        <a style="color: #000; background: #ECE5DD; text-align:center; text-decoration: none; border: 1px solid #fff; border-radius: 20px; margin-bottom: 10px; width: auto;" class="" id="my-button" href="show_image/{{product.id}}/{{product.slug}}">
-                            details
-                        </a>
-
+                      <div class="child2"  id="id{{product.id}}">
+                        <div class="dropup">
+                            <i class="fa fa-ellipsis-v"></i>
+                            <div class="dropup-content" id="id{{product.id}}d">
+                              <a href="/download/{{product.file_name}}">Download</a>
+                              <a class="" data-toggle="modal" data-target="#Renamee{{product.id}}">Rename</a>
+                              <a href="#">Details</a>
+                              <a class="delete" id="delete{{product.id}}" onclick="return confirm('Are You Sure For Delete?')" style="color: red;" href="#">Delete</a>
+                            </div>
+                        </div> 
+                      </div>
                   </div>
+                  
+                  
+                <div id="Renamee{{product.id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
-                </div>
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
 
+              <h4 class="modal-title">Please Insert Image</h4>
+
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+      <div class="modal-body">
+        <form  id="rename{{product.id}}" >
+            {% csrf_token %}
+            <div class="form-group">
+            <input type="text" name="rename" placeholder="{{product.file_name}}" class="form-control" required="" maxlength="100" id="id_rename{{product.id}}">
+
+            </div>
+            <button type="submit" class="btn btn-success">Rename</button>
+            <div>
+  <div class="ajaxProgress" style="display:none;">
+    <h3>Please Wait</h3>
+    <img src="{% static 'ajax-loader.gif' %}">
+  </div>
+</div>
+            <div id="form_result"></div>
+
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+{% comment %} $(document).ready(function(){
+    $('.delete').on('click', function(){
+        var object_id = $(this).attr('object_id'); {% endcomment %}
+        $(document).on('submit', '#rename{{product.id}}', function(e){
+          e.preventDefault();
+
+
+          var alert_wrapper = $("#alertt_wrapper");
+
+
+         
+
+
+        $('.ajaxProgress').show()
+
+          $.ajax({
+            type: 'POST',
+            url: '{% url 'rename' product.file_name product.id  %}',
+            data:{
+              name:$('#id_rename{{product.id}}').val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success:function(data){
+              $('#id-{{product.id}}').load(' #id-{{product.id}}', function(){$(this).children().unwrap()});
+              $('#id1-{{product.id}} ').load(' #id1-{{product.id}}', function(){$(this).children().unwrap()});
+              $('#Renamee{{product.id}} ').load(' #id1-{{product.id}}', function(){$(this).children().unwrap()});
+              $('#rename').css('display', 'none');
+              $('.modal-backdrop.show').css('opacity', '0');
+              $('.ajaxProgress').hide();
+
+                $('#form_result').html('<p class="alert alert-danger">renamed</p>');
+            },
+            error: function() {
+                
+            alert("There was an error. Try again please!");
+            }
+          });
+        });
+        
+
+        $('#delete{{product.id}}').click(function(e) {
+          e.preventDefault();
+
+
+          $.ajax({
+            type: 'GET',
+            url: '{% url 'delete' product.id product.file_name  %}',
+        
+            success:function(data){
+              $('#body').load('#body', function(){$(this).children().unwrap()});
+             
+              
+              
+
+                $('#form_result').html('<p class="alert alert-danger">renamed</p>');
+            },
+            error: function() {
+                
+            alert("There was an error. Try again please!");
+            }
+          });
+        });
+
+
+        $(document).on('submit', '#upload_Form', function(e){
+          e.preventDefault();
+          var formData = new FormData($('form')[0]);
+
+          $(".progress").removeClass("d-none");
+          $.ajax({
+
+            xhr : function(){
+              var xhr = new window.XMLHttpRequest();
+              xhr.upload.addEventListener('progress', function( e ) {
+                if ( e.lengthComputable ) {
+                  
+
+                  var percent = Math.round((e.loaded/e.total)*100);
+
+                  $('#progressBar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
+                }
+
+              });
+              return xhr;
+            },
+
+
+            type: 'POST',
+            url: '{% url 'upload_file'  %}',
+            data:formData,
+            processData:false,
+            contentType:false,
+            success:function(data){
+               window.location.reload();
+             alert('upload success');
+            },
+            error: function() {
+               window.location.reload();
+            alert("There was an error. Try again please!");
+            }
+          });
+        });
+ 
+
+
+</script>
+</div>
 
                 {% endfor %}
                 
@@ -239,6 +499,34 @@
             <!-- /.row -->
 
     </div>
+
+<script >
+                  function openoptions(elementt){
+                      
+                      
+                      var update_idd = elementt+'d';
+                        console.log('print',elementt);
+                        console.log(update_idd);
+
+                           document.getElementById(update_idd).classList.toggle('show1');
+
+
+                     
+                      }
+
+
+                  {% comment %} var x = document.getElementsByName("fname");
+
+                  function _{{product.id}}() {
+
+                      document.getElementById('{{product.file_name}}{{product.id}}').classList.toggle('show1');
+                  } {% endcomment %}
+                  </script>
+
+
+
+
+{% if tests|length != 0 %}
 <div id="pagination">
         {% if tests.has_previous %} 
           <a id="pagination-action" href="?page1"><i class="fa fa-angle-double-left " aria-hidden="true"></i></a>
@@ -258,6 +546,7 @@
           <a  id="pagination-action" href="?page={{ tests.paginator.num_pages}}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
         {% endif %}
        </div> 
+        {% endif %}
 
 <script>
 var progress = document.getElementById("progress");
@@ -293,7 +582,10 @@ function show_alert(message, alert) {
 // Function to upload file
 function upload() {
 
-
+  if(!input.value){
+    show_alert("No file selected", "warning")
+    return;
+  }
   // Create a new FormData instance
   var data = new FormData();
 
@@ -307,6 +599,8 @@ function upload() {
 
   // Show the cancel button
   cancel_btn.classList.remove("d-none");
+
+  progress.classList.remove("d-none");
 
   // Show the progress bar
   progress_wrapper.classList.remove("d-none");
@@ -395,19 +689,6 @@ function input_filename() {
 
 
 }
-$(document).ready(
-    function(){
-        $('input:submit').attr('disabled',true);
-        $('input:file').change(
-            function(){
-                if ($(this).val()){
-                    $('input:submit').removeAttr('disabled'); 
-                }
-                else {
-                    $('input:submit').attr('disabled',true);
-                }
-            });
-    });
 
 // Function to reset the page
 function reset() {
@@ -446,8 +727,5 @@ function reset() {
 
 </body>
 {% include 'includes/_footer.html' %}
-
-
-
 
 </html>

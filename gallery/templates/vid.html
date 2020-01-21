@@ -10,20 +10,20 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-{% load static %}
-    <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
 
+{% load static %}
+
+
+    <link rel="icon" href="{% static 'gallery.jpg' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'style1.css' %}">
 
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'style/style.css' %}">
     <link rel="stylesheet" href="{% static 'style2.css' %}">
      <link rel="stylesheet" href="{% static 'lightbox.min.css' %}">
     <script src="{% static 'lightbox-plus-jquery.min.js' %}"></script>
-
-    
-
-    <script src="static/javascript.js" ></script>
+<script src="{% static 'scripts.js' %}"></script>
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -48,52 +48,58 @@
 
 </head>
 
-<body  style="height: auto; width: auto; background-color: #ECE5DD;">
+<body id="body" style="height: auto; width: auto; background-color: #ECE5DD;">
 
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a style="color: forestgreen;" class="navbar-brand" href="/home"><img src="{% static 'gallery.jpg' %}" width="30">GreenBox</a>
+<nav class="home">
+    
+		<div class="sidebar-content" id="sidebar">
+		<div class="sidebar">
+			<ul>
+				<a href="javascript:void(0)" class="closebtn" onclick="closesidebar()">&times;</a>
+				<li class="search">
+        <form action="/search" class="nav-item form-inline my-2 my-lg-0">
+					<div class="search-wrapper">
+						<input type="search" id="search" name="q"  placeholder="Search" aria-label="Search" placeholder="Search">
+						<div class="search-icon"><button class="btn " type="submit"> <i class="fa fa-search"></i> </button></div>
+					</div>
+          </form>
+				</li>
+				<a class="links" href="#"> Home</a>
+				<a class="links" href="#"> Settings</a>
+				<a class="links" href="#"> Contact<i style="color: forestgreen;"  class="far fa-id-badge"></i></a>
+				<a class="links" href="#"> About</a>
+				<a class="links" href="{% url 'logout' %}"> Logout<i style="color: forestgreen;" class="fa fa-sign-out fa-fw"></i></a>
+				
+			</ul>
+		</div>
+    </div>
+  
 
-  <a class="nav-link btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">UPLOAD</a>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-
-
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="nav navbar-nav navbar-right mr-auto"></ul>
-
-    <ul class="navbar-nav navbar-right">
-
-
-
-    <form action="/search" class="nav-item form-inline my-2 my-lg-0">
-      <input class="form-control rounded-left form-control-sm mr-sm-2" required type="search" autocomplete="off"  name="q"  placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-    </form>
-
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" style="color: forestgreen;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-user" style="color: forestgreen;" aria-hidden="true"></i>
-        </a>
-        <div class="dropdown-menu" id="dropmenu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-user fa-fw"></i> User </a>
-          <a class="dropdown-item" href="#"><i style="color: forestgreen;" class="fa fa-gear fa-fw"></i> Settings</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'logout' %}"><i style="color: forestgreen;" class="fa fa-sign-out fa-fw"></i> Logout</a>
-        </div>
-      </li>
-    </ul>
-     </div>
+		
+	<div class="navigation" id="navigation">
+		<div class="navigation__menu">
+			<div class="toggle-btn" id="toggle-btn" onclick="opensidebar()">
+				<span class="span1"></span>
+				<span class="span2"></span>
+				<span class="span3"></span>
+			</div>
+			
+		</div>
+		<div class="navigation__logo">Greenbox<img height="30" width="30" src="{% static 'gallery.jpg' %}"></div>
+		
+	<a class="nav-link btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">UPLOAD</a>
+		
+	</div>
 
 
-</nav>
 
-<br>
+		
+	
+	</nav>
+
+	<br>
 
 {% if messages %}
 
@@ -138,9 +144,28 @@
     .pagination-current{
       background-color: #0B6623;
     }
+    .ajaxProgress{
+      display: none;
+      
+      align-items: center;
+      justify-content: center; 
+    }
 
 
 </style>
+
+{% for product in tests %}
+
+
+{% endfor %}
+
+<div>
+  <div class="ajaxProgress">
+    <h3>Please Wait</h3>
+    <img src="{% static 'ajax-loader.gif' %}">
+  </div>
+</div>
+
 
 <div id="myModal" class="modal fade" role="dialog">
 
@@ -167,6 +192,7 @@
                 {{ form.file }}
           
                 <label for="photo" id="file_input_label" class="custom-file-label">select file</label>
+                <div id="alert_wrapper"></div>
                 <button class="btn btn-primary" type="submit" id="upload_btn" onclick="upload()">UPLOAD</button>
 
                 <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
@@ -174,6 +200,7 @@
             Uploading...
           </button>
               </form>
+              
 
 
 
@@ -200,62 +227,174 @@
 
     
     
-    <hr>
-<div class="container">
+    </hr>
+
+    <div class="container-fluid">
 
             <div class="row">
-
                 
-                {% if test == 0 %}
-                <div class="col-sm-3"></div>
-                <div class="col-sm-6">
-                    <div class="jumbotron">
-                        <h1>UPLOAD YOUR FIRST video</h1>
-                       <span class="glyphicon glyphicon-camera"></span>
-                        <a class="nav-link btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">UPLOAD</a>
-                    </div>
-                </div>
-                <div class="col-sm-3"></div>
-
-                {% else %}
-
-
-                {% for vid in tests %}
-                <div class="col-sm-3 col-6">
-
-                  <div class="my-card">
-
-                    <div class="my-card-top">
-
-                      <video style="width:100%; height: 100%;"   controls>
-                          <source src="{{ vid.file.url }}#t=3" type="video/mp4">
-                           <source src="{{ vid.file.url }}#t=3" type="video/ogg">
-
-                      </video>
-
-                    </div>
-
-                    <div class="my-card-text">
-                      <a href="/"><span style="font-size: 16px; text-overflow: clip; text-align; center;">details{{test}}</span></a>
-                    </div>
-
+                
+               {% for product in tests %}
+                
+                  <div   class="col-sm-3 col-6" style="padding-bottom: 20px; padding-right:5px;">
+                          <div  id="id-{{product.id}}" class="parent" >
+                          <a href="{% url 'show_video' product.id %}" title="{{product.file_name}}"><div class="play-circle"><i class="fa fa-play-circle-o"></i></div>
+                              <div class="child1" >
+                                <img src="{{media_url }}\gallery\{{user.get_username}}\{{product.file_name1}}" style="max-height: 100%; max-width: 100%;"> </div></a>
+                              <div class="child2"  id="id{{product.id}}">
+                                  <div class="dropup">
+                                      <i class="fa fa-ellipsis-v"></i>
+                                      <div class="dropup-content" id="id{{product.id}}d">
+                                        <a href="/download/{{product.file_name}}">Download</a>
+                                        <a class="" data-toggle="modal" data-target="#Renamee{{product.id}}">Rename</a>
+                                        <a href="#">Details</a>
+                                        <a class="delete" id="delete{{product.id}}" onclick="return confirm('Are You Sure For Delete?')" style="color: red;" href="#">Delete</a>
+                                      </div>
+                                  </div> 
+                              </div>
                   </div>
+        
+                  
+                  
+                <div id="Renamee{{product.id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+
+              <h4 class="modal-title">Please Insert Image</h4>
+
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+      <div class="modal-body">
+        <form  id="rename{{product.id}}" >
+            {% csrf_token %}
+            <div class="form-group">
+            <input type="text" name="rename" placeholder="{{product.file_name}}" class="form-control" required="" maxlength="100" id="id_rename{{product.id}}">
+
+            </div>
+            <button type="submit" class="btn btn-success">Rename</button>
+            <div>
+  <div class="ajaxProgress">
+    <h3>Please Wait</h3>
+    <img src="{% static 'ajax-loader.gif' %}">
+  </div>
+</div>
+            <div id="form_result"></div>
+
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+{% comment %} $(document).ready(function(){
+    $('.delete').on('click', function(){
+        var object_id = $(this).attr('object_id'); {% endcomment %}
+        $(document).on('submit', '#rename{{product.id}}', function(e){
+          e.preventDefault();
 
 
+          var alert_wrapper = $("#alertt_wrapper");
 
-                </div>
+
+         
+
+
+        $('.ajaxProgress').show()
+
+          $.ajax({
+            type: 'POST',
+            url: '{% url 'rename' product.file_name product.id  %}',
+            data:{
+              name:$('#id_rename{{product.id}}').val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success:function(data){
+            	$('#id-{{product.id}}').load(' #id-{{product.id}}', function(){$(this).children().unwrap()});
+              $('#id1-{{product.id}} ').load(' #id1-{{product.id}}', function(){$(this).children().unwrap()});
+              $('#Renamee{{product.id}} ').load(' #id1-{{product.id}}', function(){$(this).children().unwrap()});
+              $('#rename').css('display', 'none');
+              $('.modal-backdrop.show').css('opacity', '0');
+              $('.ajaxProgress').hide();
+
+              	$('#form_result').html('<p class="alert alert-danger">renamed</p>');
+            },
+            error: function() {
+                
+            alert("There was an error. Try again please!");
+            }
+          });
+        });
+        
+
+        $('#delete{{product.id}}').click(function(e) {
+          e.preventDefault();
+
+
+          $.ajax({
+            type: 'GET',
+            url: '{% url 'delete' product.id product.file_name  %}',
+        
+            success:function(data){
+            	$('#body').load('#body', function(){$(this).children().unwrap()});
+             
+              
+              
+
+              	$('#form_result').html('<p class="alert alert-danger">renamed</p>');
+            },
+            error: function() {
+                
+            alert("There was an error. Try again please!");
+            }
+          });
+        });
+
+
+</script>
+</div>
 
                 {% endfor %}
-                {% endif %}
                 
             </div>
             <!-- /.row -->
 
     </div>
 
+<script >
+                  function openoptions(elementt){
+                      
+                      
+                      var update_idd = elementt+'d';
+                        console.log('print',elementt);
+                        console.log(update_idd);
+
+                           document.getElementById(update_idd).classList.toggle('show1');
+
+
+                     
+                      }
+
+
+                  {% comment %} var x = document.getElementsByName("fname");
+
+                  function _{{product.id}}() {
+
+                      document.getElementById('{{product.file_name}}{{product.id}}').classList.toggle('show1');
+                  } {% endcomment %}
+                  </script>
 
 
 
+
+{% if tests|length != 0 %}
 <div id="pagination">
         {% if tests.has_previous %} 
           <a id="pagination-action" href="?page1"><i class="fa fa-angle-double-left " aria-hidden="true"></i></a>
@@ -275,7 +414,7 @@
           <a  id="pagination-action" href="?page={{ tests.paginator.num_pages}}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
         {% endif %}
        </div> 
-       <br>
+        {% endif %}
 
 <script>
 var progress = document.getElementById("progress");
@@ -311,7 +450,10 @@ function show_alert(message, alert) {
 // Function to upload file
 function upload() {
 
-
+  if(!input.value){
+    show_alert("No file selected", "warning")
+    return;
+  }
   // Create a new FormData instance
   var data = new FormData();
 
@@ -413,19 +555,6 @@ function input_filename() {
 
 
 }
-$(document).ready(
-    function(){
-        $('input:submit').attr('disabled',true);
-        $('input:file').change(
-            function(){
-                if ($(this).val()){
-                    $('input:submit').removeAttr('disabled'); 
-                }
-                else {
-                    $('input:submit').attr('disabled',true);
-                }
-            });
-    });
 
 // Function to reset the page
 function reset() {

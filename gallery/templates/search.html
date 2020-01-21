@@ -223,6 +223,7 @@
 
 </style>
 
+{% if search|length != 0 %}
     <div id="pagination">
         {% if search.has_previous %} 
           <a id="pagination-action" href="?page1"><i class="fa fa-angle-double-left " aria-hidden="true"></i></a>
@@ -242,6 +243,7 @@
           <a  id="pagination-action" href="?page={{ search.paginator.num_pages}}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
         {% endif %}
        </div> 
+       {% endif %}
 
 
 <script>
